@@ -1689,6 +1689,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 977677645975629525, guid: fb6ee6b11b86295458667aaead649cd5, type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 977677645975629525, guid: fb6ee6b11b86295458667aaead649cd5, type: 3}
+      propertyPath: InitialModule.startSpeed.minScalar
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 977677645975629525, guid: fb6ee6b11b86295458667aaead649cd5, type: 3}
+      propertyPath: InitialModule.startSizeY.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 977677645975629525, guid: fb6ee6b11b86295458667aaead649cd5, type: 3}
+      propertyPath: InitialModule.startSizeZ.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3753678483837519482, guid: fb6ee6b11b86295458667aaead649cd5, type: 3}
+      propertyPath: m_Positions.Array.data[1].x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6012858380869220976, guid: fb6ee6b11b86295458667aaead649cd5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

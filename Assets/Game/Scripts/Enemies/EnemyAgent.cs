@@ -5,9 +5,12 @@ using UnityEngine;
 
 namespace Factura.Enemies
 {
+    public enum EnemyState { Idle, Chase, Attack, Dead }
+
     public sealed class EnemyAgent : MonoBehaviour
     {
-        private enum State { Idle, Chase, Attack, Dead }
+        /// <summary>Slack on the range recheck, so a blow is not lost to a few centimetres.</summary>
+        private const float ATTACK_REACH_TOLERANCE = 1.25f;
 
         [SerializeField] private Health _health;
         [SerializeField] private Collider _bodyCollider;
@@ -16,9 +19,13 @@ namespace Factura.Enemies
         private Transform _target;
         private IDamageable _targetHealth;
         private Action<EnemyAgent> _onFinished;
-        private State _state;
+        private EnemyState _state;
         private float _attackCooldown;
         private float _deathTimer;
+
+        public EnemyState State => _state;
+
+        public event Action Attacked;
 
         public event Action Killed;
 
@@ -44,7 +51,7 @@ namespace Factura.Enemies
             _targetHealth = targetHealth;
             _onFinished = onFinished;
 
-            _state = State.Idle;
+            _state = EnemyState.Idle;
             _attackCooldown = 0f;
             _deathTimer = 0f;
 
@@ -62,7 +69,7 @@ namespace Factura.Enemies
                 return;
 
             // A corpse is on its linger timer and is recycled by that, not by the distance cull.
-            if (_state != State.Dead && HasBeenLeftBehind())
+            if (_state != EnemyState.Dead && HasBeenLeftBehind())
             {
                 Finish();
                 return;
@@ -70,16 +77,16 @@ namespace Factura.Enemies
 
             switch (_state)
             {
-                case State.Idle:
+                case EnemyState.Idle:
                     TickIdle();
                     break;
-                case State.Chase:
+                case EnemyState.Chase:
                     TickChase();
                     break;
-                case State.Attack:
+                case EnemyState.Attack:
                     TickAttack();
                     break;
-                case State.Dead:
+                case EnemyState.Dead:
                     TickDead();
                     break;
             }
@@ -88,14 +95,14 @@ namespace Factura.Enemies
         private void TickIdle()
         {
             if (DistanceToTarget() <= _config.AggroRadius)
-                _state = State.Chase;
+                _state = EnemyState.Chase;
         }
 
         private void TickChase()
         {
             if (DistanceToTarget() <= _config.AttackRange)
             {
-                _state = State.Attack;
+                _state = EnemyState.Attack;
                 return;
             }
 
@@ -109,7 +116,7 @@ namespace Factura.Enemies
             // The car keeps moving, so an attacker that loses contact drops back to chasing.
             if (DistanceToTarget() > _config.AttackRange)
             {
-                _state = State.Chase;
+                _state = EnemyState.Chase;
                 return;
             }
 
@@ -119,7 +126,20 @@ namespace Factura.Enemies
             if (_attackCooldown > 0f)
                 return;
 
+            // Only the swing starts here. The blow itself lands when the animation says so,
+            // which is what DeliverAttack is for.
             _attackCooldown = _config.AttackInterval;
+            Attacked?.Invoke();
+        }
+
+        public void DeliverAttack()
+        {
+            if (_state != EnemyState.Attack || !_target)
+                return;
+
+            if (DistanceToTarget() > _config.AttackRange * ATTACK_REACH_TOLERANCE)
+                return;
+
             _targetHealth?.TakeDamage(_config.AttackDamage);
         }
 
@@ -132,7 +152,7 @@ namespace Factura.Enemies
 
         private void OnDied()
         {
-            _state = State.Dead;
+            _state = EnemyState.Dead;
             _deathTimer = _config.CorpseLingerSeconds;
 
             if (_bodyCollider)
