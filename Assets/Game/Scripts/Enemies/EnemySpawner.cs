@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Factura.Configs;
 using Factura.Core;
+using Factura.Events;
 using Factura.Player;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -20,16 +21,16 @@ namespace Factura.Enemies
         private LevelConfig _levelConfig;
         private EnemyConfig _enemyConfig;
         private CarController _car;
-        private ScoreService _score;
+        private IEventBus _events;
         private ObjectPool<EnemyAgent> _pool;
 
         [Inject]
-        public void Construct(LevelConfig levelConfig, EnemyConfig enemyConfig, CarController car, ScoreService score)
+        public void Construct(LevelConfig levelConfig, EnemyConfig enemyConfig, CarController car, IEventBus events)
         {
             _levelConfig = levelConfig;
             _enemyConfig = enemyConfig;
             _car = car;
-            _score = score;
+            _events = events;
 
             _pool = new ObjectPool<EnemyAgent>(
                 CreateEnemy,
@@ -114,11 +115,12 @@ namespace Factura.Enemies
         /// <summary>
         /// Subscribed once per instance rather than per spawn: a pooled enemy outlives the round
         /// it was used in, so a single subscription tied to its creation stays balanced.
+        /// The spawner only announces the death; what reacts to it is none of its business.
         /// </summary>
         private EnemyAgent CreateEnemy()
         {
             EnemyAgent enemy = Instantiate(_enemyPrefab, transform);
-            enemy.Killed += _score.RegisterKill;
+            enemy.Killed += () => _events.Publish(new EnemyKilled(enemy.transform.position));
             return enemy;
         }
 

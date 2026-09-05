@@ -11,6 +11,12 @@ namespace Factura.Player
         [Tooltip("Bullets spawn here and inherit this transform's forward direction.")]
         [SerializeField] private Transform _muzzle;
 
+        [Tooltip("Played on every shot. Part of the weapon rather than a game event, so it is " +
+                 "driven here instead of going through the event bus.")]
+        [SerializeField] private ParticleSystem _muzzleFlash;
+
+        [SerializeField, Min(1)] private int _muzzleFlashParticles = 6;
+
         private ProjectileService _projectiles;
         private GameStateMachine _stateMachine;
         private WeaponConfig _config;
@@ -34,6 +40,11 @@ namespace Factura.Player
 
             _cooldown = _config.FireInterval;
             _projectiles.Fire(_muzzle.position, _muzzle.rotation);
+
+            // Emit rather than Play: at this rate of fire a replay would often land while the
+            // previous flash is still alive and would simply be ignored.
+            if (_muzzleFlash)
+                _muzzleFlash.Emit(_muzzleFlashParticles);
         }
 
         public void ResetState() => _cooldown = 0f;

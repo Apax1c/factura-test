@@ -10,6 +10,8 @@ namespace Factura.Combat
         private int _current;
 
         public event Action<float> NormalizedChanged;
+
+        public event Action<int> Damaged;
         public event Action Died;
 
         public bool IsAlive => _current > 0;
@@ -31,8 +33,11 @@ namespace Factura.Combat
             if (!IsAlive || amount <= 0)
                 return;
 
-            _current = Mathf.Max(0, _current - amount);
+            int taken = Mathf.Min(amount, _current);
+            _current -= taken;
+
             NormalizedChanged?.Invoke(Normalized);
+            Damaged?.Invoke(taken);
 
             if (_current == 0)
                 Died?.Invoke();

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Factura.Configs;
 using Factura.Core;
+using Factura.Events;
 using UnityEngine;
 using UnityEngine.Pool;
 using Object = UnityEngine.Object;
@@ -10,13 +11,15 @@ namespace Factura.Combat
     public sealed class ProjectileService : IResettable, System.IDisposable
     {
         private readonly WeaponConfig _config;
+        private readonly IEventBus _events;
         private readonly ObjectPool<Projectile> _pool;
         private readonly List<Projectile> _active = new();
         private readonly Transform _root;
 
-        public ProjectileService(WeaponConfig config)
+        public ProjectileService(WeaponConfig config, IEventBus events)
         {
             _config = config;
+            _events = events;
             _root = new GameObject("[Projectiles]").transform;
 
             _pool = new ObjectPool<Projectile>(
@@ -81,7 +84,13 @@ namespace Factura.Combat
                 Object.Destroy(_root.gameObject);
         }
 
-        private Projectile CreateProjectile() => Object.Instantiate(_config.ProjectilePrefab, _root);
+
+        private Projectile CreateProjectile()
+        {
+            Projectile projectile = Object.Instantiate(_config.ProjectilePrefab, _root);
+            projectile.Hit += point => _events.Publish(new ProjectileHit(point));
+            return projectile;
+        }
 
         private void Release(Projectile projectile)
         {

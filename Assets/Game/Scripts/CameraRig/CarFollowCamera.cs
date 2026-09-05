@@ -20,8 +20,12 @@ namespace Factura.CameraRig
 
         [SerializeField, Min(0f)] private float _followSmoothTime = 0.18f;
 
+        [SerializeField] private CameraShake _shake;
+
         private Transform _target;
         private Vector3 _followVelocity;
+
+        private Vector3 _basePosition;
 
         [Inject]
         public void Construct(CarController car) => _target = car.transform;
@@ -30,14 +34,14 @@ namespace Factura.CameraRig
         {
             if (!_target) return;
 
-            transform.position = Vector3.SmoothDamp(
-                transform.position,
+            _basePosition = Vector3.SmoothDamp(
+                _basePosition,
                 _target.position + _offset,
                 ref _followVelocity,
                 _followSmoothTime
             );
 
-            AimAtTarget();
+            Apply();
         }
 
         public void ResetState()
@@ -45,11 +49,14 @@ namespace Factura.CameraRig
             if (!_target) return;
 
             _followVelocity = Vector3.zero;
-            transform.position = _target.position + _offset;
-            AimAtTarget();
+            _basePosition = _target.position + _offset;
+            Apply();
         }
 
-        private void AimAtTarget() =>
+        private void Apply()
+        {
+            transform.position = _basePosition + (_shake ? _shake.Offset : Vector3.zero);
             transform.rotation = Quaternion.LookRotation(_target.position + _lookAtOffset - transform.position);
+        }
     }
 }

@@ -1,6 +1,7 @@
 using Factura.Combat;
 using Factura.Configs;
 using Factura.Core;
+using Factura.Events;
 using UnityEngine;
 using VContainer;
 
@@ -16,6 +17,7 @@ namespace Factura.Player
 
         private CarConfig _config;
         private GameStateMachine _stateMachine;
+        private IEventBus _events;
         private Rigidbody _rigidbody;
         private Vector3 _startPosition;
         private Quaternion _startRotation;
@@ -30,11 +32,25 @@ namespace Factura.Player
         public bool IsAlive => !_health || _health.IsAlive;
 
         [Inject]
-        public void Construct(CarConfig config, GameStateMachine stateMachine)
+        public void Construct(CarConfig config, GameStateMachine stateMachine, IEventBus events)
         {
             _config = config;
             _stateMachine = stateMachine;
+            _events = events;
+
+            // Health is a generic component shared with the enemies, so the owner is the one that
+            // gives its damage a meaning the rest of the game can react to.
+            if (_health)
+                _health.Damaged += OnDamaged;
         }
+
+        private void OnDestroy()
+        {
+            if (_health)
+                _health.Damaged -= OnDamaged;
+        }
+
+        private void OnDamaged(int amount) => _events.Publish(new CarDamaged(amount));
 
         private void Awake()
         {

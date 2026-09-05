@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b233027a69f15e548b7df954d2dcd388, type: 3}
+  m_Name: VfxConfig
+  m_EditorClassIdentifier: Factura.Game::Factura.Configs.VfxConfig
+  _hitEffect: {fileID: 8214249455504622276, guid: aa8b4f34de0da1043bf266e69a76776f, type: 3}
+  _deathEffect: {fileID: 5864904301894979674, guid: ab632ec112dc6044c86c67a882679831, type: 3}
+  _instancesPerEffect: 10
