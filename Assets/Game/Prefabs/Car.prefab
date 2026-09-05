@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 2962958924268258567}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.163, z: 1.734895}
+  m_LocalPosition: {x: 0, y: 0.815, z: 1.39}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -103,6 +103,7 @@ GameObject:
   - component: {fileID: 1317151370066203519}
   - component: {fileID: 1453699370369030191}
   - component: {fileID: 4346275187047350879}
+  - component: {fileID: 3504804782507595408}
   m_Layer: 0
   m_Name: Car
   m_TagString: Untagged
@@ -187,6 +188,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62fbec5d829b5dd4f881c0198280ca69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Factura.Game::Factura.Player.CarController
+  _health: {fileID: 3504804782507595408}
+--- !u!114 &3504804782507595408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8452268739608708571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab62f5387bdbe8249978bd7634668e66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Factura.Game::Factura.Combat.Health
 --- !u!1001 &81710259381357993
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -195,6 +209,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6012858380869220976}
     m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 2db938a3e6cb2a848be439074c675f60, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2db938a3e6cb2a848be439074c675f60, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2db938a3e6cb2a848be439074c675f60, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.9
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2db938a3e6cb2a848be439074c675f60, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -234,6 +260,10 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 2db938a3e6cb2a848be439074c675f60, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2db938a3e6cb2a848be439074c675f60, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 2db938a3e6cb2a848be439074c675f60, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -278,12 +308,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 8782149640337615762}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 6983d0ddd9ea0d04dbacae03b78862f7, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6983d0ddd9ea0d04dbacae03b78862f7, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6983d0ddd9ea0d04dbacae03b78862f7, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6983d0ddd9ea0d04dbacae03b78862f7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6983d0ddd9ea0d04dbacae03b78862f7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.134
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6983d0ddd9ea0d04dbacae03b78862f7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -316,6 +358,10 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 6983d0ddd9ea0d04dbacae03b78862f7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6983d0ddd9ea0d04dbacae03b78862f7, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 6983d0ddd9ea0d04dbacae03b78862f7, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'

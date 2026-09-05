@@ -1,3 +1,4 @@
+using Factura.Combat;
 using Factura.Configs;
 using Factura.Core;
 using UnityEngine;
@@ -11,6 +12,8 @@ namespace Factura.Player
     [RequireComponent(typeof(Rigidbody))]
     public sealed class CarController : MonoBehaviour, IResettable
     {
+        [SerializeField] private Health _health;
+
         private CarConfig _config;
         private GameStateMachine _stateMachine;
         private Rigidbody _rigidbody;
@@ -21,6 +24,10 @@ namespace Factura.Player
         public float DistanceTravelled { get; private set; }
 
         public float NormalizedSpeed => _config == null ? 0f : _speed / _config.MaxSpeed;
+
+        public Health Health => _health;
+
+        public bool IsAlive => !_health || _health.IsAlive;
 
         [Inject]
         public void Construct(CarConfig config, GameStateMachine stateMachine)
@@ -63,6 +70,9 @@ namespace Factura.Player
             _speed = 0f;
             DistanceTravelled = 0f;
             transform.SetPositionAndRotation(_startPosition, _startRotation);
+
+            if (_health)
+                _health.Initialize(_config.MaxHealth);
         }
     }
 }

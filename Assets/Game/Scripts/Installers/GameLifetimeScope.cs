@@ -2,6 +2,7 @@ using Factura.CameraRig;
 using Factura.Combat;
 using Factura.Configs;
 using Factura.Core;
+using Factura.Enemies;
 using Factura.Input;
 using Factura.Level;
 using Factura.Player;
@@ -17,9 +18,10 @@ namespace Factura.Installers
     public sealed class GameLifetimeScope : LifetimeScope
     {
         [Header("Configs")]
-        [SerializeField] private LevelConfig levelConfig;
-        [SerializeField] private CarConfig carConfig;
-        [SerializeField] private WeaponConfig weaponConfig;
+        [SerializeField] private LevelConfig _levelConfig;
+        [SerializeField] private CarConfig _carConfig;
+        [SerializeField] private WeaponConfig _weaponConfig;
+        [SerializeField] private EnemyConfig _enemyConfig;
 
         protected override void Configure(IContainerBuilder builder)
         {
@@ -38,9 +40,10 @@ namespace Factura.Installers
 
         private void RegisterConfigs(IContainerBuilder builder)
         {
-            builder.RegisterInstance(levelConfig);
-            builder.RegisterInstance(carConfig);
-            builder.RegisterInstance(weaponConfig);
+            builder.RegisterInstance(_levelConfig);
+            builder.RegisterInstance(_carConfig);
+            builder.RegisterInstance(_weaponConfig);
+            builder.RegisterInstance(_enemyConfig);
         }
 
         private static void RegisterServices(IContainerBuilder builder)
@@ -62,6 +65,7 @@ namespace Factura.Installers
             builder.RegisterComponentInHierarchy<CarFollowCamera>().AsSelf().AsImplementedInterfaces();
             builder.RegisterComponentInHierarchy<TurretAim>().AsSelf().AsImplementedInterfaces();
             builder.RegisterComponentInHierarchy<TurretShooter>().AsSelf().AsImplementedInterfaces();
+            builder.RegisterComponentInHierarchy<EnemySpawner>().AsSelf().AsImplementedInterfaces();
             builder.RegisterComponentInHierarchy<GroundTiler>().AsSelf();
         }
     }

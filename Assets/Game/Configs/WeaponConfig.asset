@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c01a8dda4c43d3b40a13a2db51038ccd, type: 3}
   m_Name: WeaponConfig
   m_EditorClassIdentifier: Factura.Game::Factura.Configs.WeaponConfig
-  maxYawAngle: 60
-  degreesPerScreenWidth: 150
-  aimSmoothTime: 0.06
-  fireInterval: 0.14
-  damage: 10
-  projectilePrefab: {fileID: 1575030379706157385, guid: 3115e3f2fc78bef41a28efa6d74c1e00, type: 3}
-  projectileSpeed: 70
-  projectileLifetime: 2.5
-  hitMask:
+  _maxYawAngle: 60
+  _degreesPerScreenWidth: 150
+  _aimSmoothTime: 0.06
+  _fireInterval: 0.14
+  _damage: 10
+  _projectilePrefab: {fileID: 1575030379706157385, guid: 3115e3f2fc78bef41a28efa6d74c1e00, type: 3}
+  _projectileSpeed: 70
+  _projectileLifetime: 2.5
+  _hitMask:
     serializedVersion: 2
-    m_Bits: 0
-  poolCapacity: 32
+    m_Bits: 256
+  _poolCapacity: 32
