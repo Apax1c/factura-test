@@ -175,6 +175,9 @@ MonoBehaviour:
   _progressBar: {fileID: 7861003136155473677}
   _distanceLabel: {fileID: 7861003134385780719}
   _killsLabel: {fileID: 549347572}
+  _killsPunch: {fileID: 1069175812}
+  _healthPunch: {fileID: 1570803258}
+  _healthFlash: {fileID: 1570803257}
 --- !u!1 &218285182
 GameObject:
   m_ObjectHideFlags: 0
@@ -250,6 +253,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 218285182}
   m_CullTransparentMesh: 1
+--- !u!1 &222941958 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7861003136335420190, guid: 44c3caca263fb4b36b997df01b9c5b8d, type: 3}
+  m_PrefabInstance: {fileID: 1570803248}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &549347570
 GameObject:
   m_ObjectHideFlags: 0
@@ -654,6 +662,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Factura.Game::Factura.UI.UiPulse
   _amplitude: 0.06
   _cyclesPerSecond: 0.9
+--- !u!114 &983561595 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7861003135834471123, guid: 44c3caca263fb4b36b997df01b9c5b8d, type: 3}
+  m_PrefabInstance: {fileID: 1570803248}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1018559185
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -878,6 +897,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1069175811}
+  - component: {fileID: 1069175812}
   m_Layer: 0
   m_Name: Kills
   m_TagString: Untagged
@@ -906,6 +926,20 @@ RectTransform:
   m_AnchoredPosition: {x: -40, y: -40}
   m_SizeDelta: {x: 240, y: 96}
   m_Pivot: {x: 1, y: 1}
+--- !u!114 &1069175812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1069175810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25a7851b7312ad842b19b7a699ece73b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Factura.Game::Factura.UI.UiPunch
+  _duration: 0.2
+  _strength: 0.3
 --- !u!1 &1081567303
 GameObject:
   m_ObjectHideFlags: 0
@@ -1541,7 +1575,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7861003136335420190, guid: 44c3caca263fb4b36b997df01b9c5b8d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1570803258}
+    - targetCorrespondingSourceObject: {fileID: 7861003136335420190, guid: 44c3caca263fb4b36b997df01b9c5b8d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1570803257}
   m_SourcePrefab: {fileID: 100100000, guid: 44c3caca263fb4b36b997df01b9c5b8d, type: 3}
 --- !u!224 &1570803249 stripped
 RectTransform:
@@ -1564,12 +1604,41 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7861003136335420177, guid: 44c3caca263fb4b36b997df01b9c5b8d, type: 3}
   m_PrefabInstance: {fileID: 1570803248}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 222941958}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1570803257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 222941958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a28eaca67414d1409c5f5702f90e8da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Factura.Game::Factura.UI.UiFlash
+  _target: {fileID: 983561595}
+  _flashColor: {r: 1, g: 1, b: 1, a: 1}
+  _duration: 0.18
+--- !u!114 &1570803258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 222941958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25a7851b7312ad842b19b7a699ece73b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Factura.Game::Factura.UI.UiPunch
+  _duration: 0.2
+  _strength: 0.3
 --- !u!1 &1703631873
 GameObject:
   m_ObjectHideFlags: 0
@@ -1689,6 +1758,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 479899928371604034, guid: fb6ee6b11b86295458667aaead649cd5, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 479899928371604034, guid: fb6ee6b11b86295458667aaead649cd5, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 479899928371604034, guid: fb6ee6b11b86295458667aaead649cd5, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 479899928371604034, guid: fb6ee6b11b86295458667aaead649cd5, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 977677645975629525, guid: fb6ee6b11b86295458667aaead649cd5, type: 3}
       propertyPath: InitialModule.startSpeed.scalar
       value: 20

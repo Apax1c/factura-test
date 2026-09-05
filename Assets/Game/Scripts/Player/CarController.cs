@@ -76,9 +76,30 @@ namespace Factura.Player
             if (Mathf.Approximately(_speed, 0f))
                 return;
 
-            float step = _speed * Time.fixedDeltaTime;
-            DistanceTravelled += step;
-            _rigidbody.MovePosition(_rigidbody.position + transform.forward * step);
+            DistanceTravelled += _speed * Time.fixedDeltaTime;
+            ApplyTransform();
+        }
+
+        /// <summary>
+        /// Places the car from the distance covered rather than nudging it each frame. Deriving
+        /// the pose from one number keeps the drift exactly repeatable and makes a reset a matter
+        /// of zeroing that number.
+        /// </summary>
+        private void ApplyTransform()
+        {
+            float phase = DistanceTravelled / _config.SwayWavelength * Mathf.PI * 2f;
+            float lateral = Mathf.Sin(phase) * _config.SwayAmplitude;
+
+            Vector3 forward = _startRotation * Vector3.forward;
+            Vector3 right = _startRotation * Vector3.right;
+
+            _rigidbody.MovePosition(_startPosition + forward * DistanceTravelled + right * lateral);
+
+            // The slope of the sway curve is the direction the car is actually travelling, so
+            // steering into it stops the body from sliding sideways like a crab.
+            float slope = Mathf.Cos(phase) * _config.SwayAmplitude * (Mathf.PI * 2f / _config.SwayWavelength);
+            float yaw = Mathf.Atan(slope) * Mathf.Rad2Deg;
+            _rigidbody.MoveRotation(_startRotation * Quaternion.Euler(0f, yaw, 0f));
         }
 
         public void ResetState()

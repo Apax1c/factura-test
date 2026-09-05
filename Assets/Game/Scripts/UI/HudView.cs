@@ -16,10 +16,16 @@ namespace Factura.UI
         [SerializeField] private TMP_Text _distanceLabel;
         [SerializeField] private TMP_Text _killsLabel;
 
+        [Header("Feedback")]
+        [SerializeField] private UiPunch _killsPunch;
+        [SerializeField] private UiPunch _healthPunch;
+        [SerializeField] private UiFlash _healthFlash;
+
         private CarController _car;
         private LevelProgress _levelProgress;
         private ScoreService _score;
         private int _shownDistance = -1;
+        private int _shownKills;
 
         [Inject]
         public void Construct(CarController car, LevelProgress levelProgress, ScoreService score)
@@ -40,6 +46,8 @@ namespace Factura.UI
             if (_car && _car.Health)
             {
                 _car.Health.NormalizedChanged += OnHealthChanged;
+
+                _car.Health.Damaged += OnCarDamaged;
                 OnHealthChanged(_car.Health.Normalized);
             }
         }
@@ -50,7 +58,19 @@ namespace Factura.UI
                 _score.KillsChanged -= OnKillsChanged;
 
             if (_car && _car.Health)
+            {
                 _car.Health.NormalizedChanged -= OnHealthChanged;
+                _car.Health.Damaged -= OnCarDamaged;
+            }
+        }
+
+        private void OnCarDamaged(int amount)
+        {
+            if (_healthPunch)
+                _healthPunch.Play();
+
+            if (_healthFlash)
+                _healthFlash.Play();
         }
 
         private void Update()
@@ -86,6 +106,11 @@ namespace Factura.UI
         {
             if (_killsLabel)
                 _killsLabel.text = kills.ToString();
+
+            if (kills > _shownKills && _killsPunch)
+                _killsPunch.Play();
+
+            _shownKills = kills;
         }
     }
 }
