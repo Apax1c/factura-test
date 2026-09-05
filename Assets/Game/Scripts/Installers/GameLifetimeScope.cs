@@ -6,6 +6,7 @@ using Factura.Enemies;
 using Factura.Input;
 using Factura.Level;
 using Factura.Player;
+using Factura.UI;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -31,11 +32,12 @@ namespace Factura.Installers
 
             builder.RegisterEntryPoint<GameFlow>();
 
-            // The container instantiates lazily: a registration is only built once something
-            // resolves it. The car and the camera are pulled in through the IResettable
-            // collection that GameFlow depends on, but nothing depends on the tiler, so it has
-            // to be resolved explicitly or its injection would never run.
-            builder.RegisterBuildCallback(container => container.Resolve<GroundTiler>());
+            builder.RegisterBuildCallback(container =>
+            {
+                container.Resolve<GroundTiler>();
+                container.Resolve<HudView>();
+                container.Resolve<GameResultView>();
+            });
         }
 
         private void RegisterConfigs(IContainerBuilder builder)
@@ -52,6 +54,7 @@ namespace Factura.Installers
             builder.Register<GameStateMachine>(Lifetime.Singleton);
             builder.Register<LevelProgress>(Lifetime.Singleton);
             builder.Register<ProjectileService>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
+            builder.Register<ScoreService>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
         }
 
         /// <summary>
@@ -67,6 +70,8 @@ namespace Factura.Installers
             builder.RegisterComponentInHierarchy<TurretShooter>().AsSelf().AsImplementedInterfaces();
             builder.RegisterComponentInHierarchy<EnemySpawner>().AsSelf().AsImplementedInterfaces();
             builder.RegisterComponentInHierarchy<GroundTiler>().AsSelf();
+            builder.RegisterComponentInHierarchy<HudView>().AsSelf();
+            builder.RegisterComponentInHierarchy<GameResultView>().AsSelf();
         }
     }
 }

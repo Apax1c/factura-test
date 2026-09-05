@@ -20,14 +20,16 @@ namespace Factura.Enemies
         private LevelConfig _levelConfig;
         private EnemyConfig _enemyConfig;
         private CarController _car;
+        private ScoreService _score;
         private ObjectPool<EnemyAgent> _pool;
 
         [Inject]
-        public void Construct(LevelConfig levelConfig, EnemyConfig enemyConfig, CarController car)
+        public void Construct(LevelConfig levelConfig, EnemyConfig enemyConfig, CarController car, ScoreService score)
         {
             _levelConfig = levelConfig;
             _enemyConfig = enemyConfig;
             _car = car;
+            _score = score;
 
             _pool = new ObjectPool<EnemyAgent>(
                 CreateEnemy,
@@ -109,7 +111,16 @@ namespace Factura.Enemies
             return true;
         }
 
-        private EnemyAgent CreateEnemy() => Instantiate(_enemyPrefab, transform);
+        /// <summary>
+        /// Subscribed once per instance rather than per spawn: a pooled enemy outlives the round
+        /// it was used in, so a single subscription tied to its creation stays balanced.
+        /// </summary>
+        private EnemyAgent CreateEnemy()
+        {
+            EnemyAgent enemy = Instantiate(_enemyPrefab, transform);
+            enemy.Killed += _score.RegisterKill;
+            return enemy;
+        }
 
         private void Release(EnemyAgent enemy)
         {

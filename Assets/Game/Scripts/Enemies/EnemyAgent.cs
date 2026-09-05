@@ -20,6 +20,8 @@ namespace Factura.Enemies
         private float _attackCooldown;
         private float _deathTimer;
 
+        public event Action Killed;
+
         private void OnEnable()
         {
             if (_health) _health.Died += OnDied;
@@ -135,6 +137,8 @@ namespace Factura.Enemies
 
             if (_bodyCollider)
                 _bodyCollider.enabled = false;
+
+            Killed?.Invoke();
         }
 
         private float DistanceToTarget()
