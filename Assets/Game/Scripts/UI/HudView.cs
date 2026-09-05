@@ -10,13 +10,16 @@ namespace Factura.UI
 {
     public sealed class HudView : MonoBehaviour
     {
-        [SerializeField] private Image _healthFill;
-        [SerializeField] private Image _progressFill;
+        [SerializeField] private Slider _healthBar;
+        [SerializeField] private TMP_Text _healthLabel;
+        [SerializeField] private Slider _progressBar;
+        [SerializeField] private TMP_Text _distanceLabel;
         [SerializeField] private TMP_Text _killsLabel;
 
         private CarController _car;
         private LevelProgress _levelProgress;
         private ScoreService _score;
+        private int _shownDistance = -1;
 
         [Inject]
         public void Construct(CarController car, LevelProgress levelProgress, ScoreService score)
@@ -52,14 +55,31 @@ namespace Factura.UI
 
         private void Update()
         {
-            if (_progressFill && _levelProgress != null)
-                _progressFill.fillAmount = _levelProgress.Normalized;
+            if (_levelProgress == null)
+                return;
+
+            if (_progressBar)
+                _progressBar.value = _levelProgress.Normalized;
+
+            // Distance changes every frame but only ever needs redrawing when the whole metre
+            // does, so the string is rebuilt at most once per metre instead of once per frame.
+            int metres = Mathf.CeilToInt(_levelProgress.Remaining);
+            if (metres == _shownDistance)
+                return;
+
+            _shownDistance = metres;
+
+            if (_distanceLabel)
+                _distanceLabel.text = metres + "m";
         }
 
         private void OnHealthChanged(float normalized)
         {
-            if (_healthFill)
-                _healthFill.fillAmount = normalized;
+            if (_healthBar)
+                _healthBar.value = normalized;
+
+            if (_healthLabel && _car && _car.Health)
+                _healthLabel.text = _car.Health.Current.ToString();
         }
 
         private void OnKillsChanged(int kills)

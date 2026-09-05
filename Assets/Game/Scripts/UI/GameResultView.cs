@@ -1,15 +1,20 @@
 using Factura.Core;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using VContainer;
 
 namespace Factura.UI
 {
     public sealed class GameResultView : MonoBehaviour
     {
-        [SerializeField] private GameObject _panel;
-        [SerializeField] private TMP_Text _title;
-        [SerializeField] private TMP_Text _hint;
+        [SerializeField] private GameObject _startPrompt;
+        [SerializeField] private GameObject _resultPopup;
+        [SerializeField] private TMP_Text _resultTitle;
+        [SerializeField] private TMP_Text _resultHint;
+        [SerializeField] private Image _resultIcon;
+        [SerializeField] private Sprite _winIcon;
+        [SerializeField] private Sprite _loseIcon;
 
         private GameStateMachine _stateMachine;
 
@@ -36,36 +41,51 @@ namespace Factura.UI
             switch (state)
             {
                 case GameState.Ready:
-                    Show("Tap to start", string.Empty);
+                    ShowStartPrompt();
                     break;
                 case GameState.Playing:
-                    Hide();
+                    HideAll();
                     break;
                 case GameState.Win:
-                    Show("You win", "Tap to restart");
+                    ShowResult("You win", _winIcon);
                     break;
                 case GameState.Lose:
-                    Show("You lose", "Tap to restart");
+                    ShowResult("You lose", _loseIcon);
                     break;
             }
         }
 
-        private void Show(string title, string hint)
+        private void ShowStartPrompt()
         {
-            if (_panel)
-                _panel.SetActive(true);
-
-            if (_title)
-                _title.text = title;
-
-            if (_hint)
-                _hint.text = hint;
+            SetActive(_startPrompt, true);
+            SetActive(_resultPopup, false);
         }
 
-        private void Hide()
+        private void HideAll()
         {
-            if (_panel)
-                _panel.SetActive(false);
+            SetActive(_startPrompt, false);
+            SetActive(_resultPopup, false);
+        }
+
+        private void ShowResult(string title, Sprite icon)
+        {
+            SetActive(_startPrompt, false);
+            SetActive(_resultPopup, true);
+
+            if (_resultTitle)
+                _resultTitle.text = title;
+
+            if (_resultHint)
+                _resultHint.text = "Tap to restart";
+
+            if (_resultIcon && icon)
+                _resultIcon.sprite = icon;
+        }
+
+        private static void SetActive(GameObject target, bool active)
+        {
+            if (target)
+                target.SetActive(active);
         }
     }
 }

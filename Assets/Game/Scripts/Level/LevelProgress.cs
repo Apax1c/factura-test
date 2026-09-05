@@ -15,9 +15,10 @@ namespace Factura.Level
             _config = config;
         }
 
-        /// <summary>Progress along the level in the 0..1 range.</summary>
         public float Normalized => Mathf.Clamp01(_car.DistanceTravelled / _config.Length);
 
         public bool IsFinished => _car.DistanceTravelled >= _config.Length;
+
+        public float Remaining => Mathf.Max(0f, _config.Length - _car.DistanceTravelled);
     }
 }

@@ -19,7 +19,7 @@ MonoBehaviour:
   _damage: 10
   _projectilePrefab: {fileID: 1575030379706157385, guid: 3115e3f2fc78bef41a28efa6d74c1e00, type: 3}
   _projectileSpeed: 70
-  _projectileLifetime: 2.5
+  _projectileLifetime: 2
   _hitMask:
     serializedVersion: 2
     m_Bits: 256

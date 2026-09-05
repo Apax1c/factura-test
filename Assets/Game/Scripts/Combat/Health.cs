@@ -13,6 +13,10 @@ namespace Factura.Combat
         public event Action Died;
 
         public bool IsAlive => _current > 0;
+
+        public int Current => _current;
+
+        public int Max => _max;
         public float Normalized => _max > 0 ? (float)_current / _max : 0f;
 
         public void Initialize(int max)
